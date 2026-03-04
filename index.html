@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kampong — Coming Soon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+        :root {
+            --cream: #FDF6EC;
+            --terracotta: #C4513A;
+            --terracotta-light: #E86F56;
+            --amber: #D4952A;
+            --deep-green: #2D5E4A;
+            --charcoal: #2A2220;
+            --tile-pink: #E8A599;
+            --tile-teal: #6BAFA0;
+        }
+
+        html { font-size: 16px; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            color: var(--charcoal);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* === Peranakan-inspired tile border === */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            border: 18px solid transparent;
+            border-image: repeating-linear-gradient(
+                90deg,
+                var(--tile-teal) 0px, var(--tile-teal) 18px,
+                var(--tile-pink) 18px, var(--tile-pink) 36px,
+                var(--amber) 36px, var(--amber) 54px,
+                var(--terracotta) 54px, var(--terracotta) 72px
+            ) 18;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* === Warm ambient background === */
+        .bg-glow {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.25;
+            z-index: 0;
+            animation: drift 20s ease-in-out infinite alternate;
+        }
+        .bg-glow--1 {
+            width: 600px; height: 600px;
+            background: var(--terracotta-light);
+            top: -15%; left: -10%;
+        }
+        .bg-glow--2 {
+            width: 500px; height: 500px;
+            background: var(--amber);
+            bottom: -20%; right: -10%;
+            animation-delay: -7s;
+        }
+        .bg-glow--3 {
+            width: 350px; height: 350px;
+            background: var(--tile-teal);
+            top: 50%; left: 60%;
+            animation-delay: -13s;
+            opacity: 0.15;
+        }
+
+        @keyframes drift {
+            0%   { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(40px, -30px) scale(1.08); }
+        }
+
+        /* === Main content === */
+        .container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 680px;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Wok / cooking icon */
+        .wok {
+            display: inline-block;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        .wok__bowl {
+            width: 80px;
+            height: 44px;
+            border: 4px solid var(--charcoal);
+            border-top: none;
+            border-radius: 0 0 50% 50%;
+            position: relative;
+        }
+        .wok__handle-l, .wok__handle-r {
+            position: absolute;
+            top: -2px;
+            width: 18px;
+            height: 4px;
+            background: var(--charcoal);
+            border-radius: 2px;
+        }
+        .wok__handle-l { left: -20px; }
+        .wok__handle-r { right: -20px; }
+
+        /* Steam lines */
+        .steam {
+            position: absolute;
+            bottom: 38px;
+            left: 50%;
+            display: flex;
+            gap: 10px;
+            transform: translateX(-50%);
+        }
+        .steam__line {
+            width: 3px;
+            height: 28px;
+            background: var(--terracotta);
+            border-radius: 2px;
+            opacity: 0;
+            animation: rise 2.4s ease-out infinite;
+        }
+        .steam__line:nth-child(1) { animation-delay: 0s; }
+        .steam__line:nth-child(2) { animation-delay: 0.6s; height: 34px; }
+        .steam__line:nth-child(3) { animation-delay: 1.2s; height: 24px; }
+
+        @keyframes rise {
+            0%   { opacity: 0; transform: translateY(0) scaleY(0.6); }
+            30%  { opacity: 0.7; }
+            100% { opacity: 0; transform: translateY(-38px) scaleY(1.2); }
+        }
+
+        .headline {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: clamp(2rem, 5.5vw, 3.2rem);
+            line-height: 1.2;
+            color: var(--charcoal);
+            margin-bottom: 1.5rem;
+            animation: fadeUp 1s ease-out both;
+        }
+        .headline em {
+            font-style: italic;
+            font-weight: 500;
+            color: var(--terracotta);
+        }
+
+        .body-text {
+            font-size: clamp(1rem, 2.5vw, 1.15rem);
+            line-height: 1.7;
+            color: var(--charcoal);
+            opacity: 0.82;
+            max-width: 520px;
+            margin: 0 auto 2.5rem;
+            animation: fadeUp 1s ease-out 0.2s both;
+        }
+
+        .divider {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--terracotta), var(--amber));
+            border-radius: 2px;
+            margin: 0 auto 2.5rem;
+            animation: fadeUp 1s ease-out 0.35s both;
+        }
+
+        .cooking-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--charcoal);
+            color: var(--cream);
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.6rem 1.4rem;
+            border-radius: 100px;
+            animation: fadeUp 1s ease-out 0.5s both;
+        }
+        .cooking-tag .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--terracotta-light);
+            border-radius: 50%;
+            animation: pulse 1.8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%      { opacity: 0.4; transform: scale(0.75); }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* === Subtle grain overlay === */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            background-size: 256px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* === Footer === */
+        .footer {
+            position: fixed;
+            bottom: 28px;
+            z-index: 3;
+            font-size: 0.78rem;
+            color: var(--charcoal);
+            opacity: 0.4;
+            letter-spacing: 0.03em;
+        }
+
+        /* === Mobile adjustments === */
+        @media (max-width: 480px) {
+            body::before { border-width: 10px; }
+            .container { padding: 1.5rem 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow bg-glow--1"></div>
+    <div class="bg-glow bg-glow--2"></div>
+    <div class="bg-glow bg-glow--3"></div>
+
+    <div class="container">
+
+        <div class="wok">
+            <div class="steam">
+                <div class="steam__line"></div>
+                <div class="steam__line"></div>
+                <div class="steam__line"></div>
+            </div>
+            <div class="wok__bowl">
+                <div class="wok__handle-l"></div>
+                <div class="wok__handle-r"></div>
+            </div>
+        </div>
+
+        <h1 class="headline">
+            We're developing a<br><em>uniquely Singaporean</em><br>Community
+        </h1>
+
+        <div class="divider"></div>
+
+        <p class="body-text">
+            Our website is cooking and will be up soon!<br>
+            Stay tuned — something good is on the way.
+        </p>
+
+        <span class="cooking-tag">
+            <span class="dot"></span>
+            Now cooking
+        </span>
+
+    </div>
+
+    <footer class="footer">&copy; 2026 kampong.com.sg</footer>
+
+</body>
+</html>
