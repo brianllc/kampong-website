@@ -11,6 +11,7 @@
 <meta property="og:url" content="https://kampong.com.sg/">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230F1A14'/%3E%3Ctext x='32' y='46' font-size='44' font-weight='bold' text-anchor='middle' fill='%23FF5C39' font-family='Arial'%3E*%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600&family=Archivo+Black&display=swap" rel="stylesheet">
@@ -92,9 +93,9 @@ footer{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;paddin
   nav .coords{display:none}
   nav .links{gap:1rem}
   .chapter{grid-template-columns:1fr}
-  .chapter .photo{order:-1}
-  .chapter .photo{height:34vh}
+  .chapter .photo{order:-1;height:34vh}
 }
+@media(max-width:400px){nav{padding-left:4vw;padding-right:4vw}nav .links{gap:.7rem;font-size:.72rem}}
 
 /* === Reduced motion === */
 @media(prefers-reduced-motion:reduce){
@@ -129,10 +130,7 @@ footer{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;paddin
   <img src="assets/img/hero.jpg" alt="Crowds dining at a bustling Singapore hawker centre" fetchpriority="high">
 </div>
 
-<div class="ticker" aria-hidden="true"><div class="inner">
-  LAKSA &nbsp;·&nbsp; SHOPHOUSES &nbsp;·&nbsp; NATIONAL DAY &nbsp;·&nbsp; CHICKEN RICE &nbsp;·&nbsp; MERLION &nbsp;·&nbsp; HDB VOID DECKS &nbsp;·&nbsp; PERANAKAN TILES &nbsp;·&nbsp; KOPI-O &nbsp;·&nbsp; GARDENS BY THE BAY &nbsp;·&nbsp; SINGLISH &nbsp;·&nbsp;
-  LAKSA &nbsp;·&nbsp; SHOPHOUSES &nbsp;·&nbsp; NATIONAL DAY &nbsp;·&nbsp; CHICKEN RICE &nbsp;·&nbsp; MERLION &nbsp;·&nbsp; HDB VOID DECKS &nbsp;·&nbsp; PERANAKAN TILES &nbsp;·&nbsp; KOPI-O &nbsp;·&nbsp; GARDENS BY THE BAY &nbsp;·&nbsp; SINGLISH &nbsp;·&nbsp;
-</div></div>
+<div class="ticker" aria-hidden="true"><div class="inner"><span>LAKSA &nbsp;·&nbsp; SHOPHOUSES &nbsp;·&nbsp; NATIONAL DAY &nbsp;·&nbsp; CHICKEN RICE &nbsp;·&nbsp; MERLION &nbsp;·&nbsp; HDB VOID DECKS &nbsp;·&nbsp; PERANAKAN TILES &nbsp;·&nbsp; KOPI-O &nbsp;·&nbsp; GARDENS BY THE BAY &nbsp;·&nbsp; SINGLISH &nbsp;·&nbsp;</span><span>LAKSA &nbsp;·&nbsp; SHOPHOUSES &nbsp;·&nbsp; NATIONAL DAY &nbsp;·&nbsp; CHICKEN RICE &nbsp;·&nbsp; MERLION &nbsp;·&nbsp; HDB VOID DECKS &nbsp;·&nbsp; PERANAKAN TILES &nbsp;·&nbsp; KOPI-O &nbsp;·&nbsp; GARDENS BY THE BAY &nbsp;·&nbsp; SINGLISH &nbsp;·&nbsp;</span></div></div>
 
 <section class="chapter ch-food" id="food">
   <div>
@@ -177,7 +175,8 @@ footer{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;paddin
 <script>
 (function () {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var targets = document.querySelectorAll('.chapter > div, .chapter .photo, .outro');
+  if (!('IntersectionObserver' in window)) return;
+  var targets = document.querySelectorAll('.chapter > div, .outro');
   targets.forEach(function (el) { el.classList.add('reveal'); });
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
