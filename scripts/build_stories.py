@@ -61,11 +61,14 @@ def parse_draft(text):
             year = None if raw == "?" else raw
         body_start = 2
     body = "\n".join(lines[body_start:]).strip()
-    paras = [
-        " ".join(p.split())
-        for p in re.split(r"\n\s*\n", body)
-        if p.strip()
-    ]
+    paras = []
+    for p in re.split(r"\n\s*\n", body):
+        if not p.strip():
+            continue
+        collapsed = " ".join(p.split())
+        if re.fullmatch(r"!\[[^\]]*\]\([^)]*\)", collapsed):
+            continue  # drop standalone image (images out of scope for v1)
+        paras.append(collapsed)
     return title, year, paras
 
 
@@ -143,7 +146,13 @@ def render_story_page(item, prev, nxt):
     meta = item["section"]
     if item.get("year"):
         meta += " · " + item["year"]
-    paras = "\n".join("<p>{}</p>".format(md_inline(p)) for p in item["paras"])
+    parts = []
+    for p in item["paras"]:
+        if p == "---":
+            parts.append('<hr class="story-sep">')
+        else:
+            parts.append("<p>{}</p>".format(md_inline(p)))
+    paras = "\n".join(parts)
     head = _HEAD.format(
         title="{} — Kampong Stories".format(esc_title),
         desc=html.escape(first_sentence(item["paras"]), quote=True),

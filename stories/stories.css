@@ -31,6 +31,7 @@ body.story nav .back{color:var(--ink)}
 .story-body p{font-size:1.15rem;line-height:1.78;margin-bottom:1.4rem}
 .story-body h1+p::first-letter{font-family:'Archivo Black',sans-serif;float:left;font-size:3.4rem;line-height:.8;padding:.1em .12em 0 0;color:var(--chili)}
 .story-body strong{font-weight:600}
+.story-body hr.story-sep{border:none;border-top:1px solid rgba(15,26,20,.18);width:4rem;margin:2.6rem 0}
 
 /* prev/next footer nav */
 nav.storynav{position:static;backdrop-filter:none;display:flex;justify-content:space-between;align-items:center;gap:1rem;max-width:44rem;margin:0 auto;padding:2.4rem 6vw 6vh;font-family:'Archivo',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.06em;border-top:1px solid rgba(15,26,20,.12)}

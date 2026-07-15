@@ -77,6 +77,38 @@ class TestParseDraft(unittest.TestCase):
         self.assertEqual(title, "Mystery")
 
 
+DRAFT_WITH_IMAGE = """# Fire Grass
+<!-- status: awaiting read · level: lower primary · year: ~1990 -->
+
+The boys ran down the hill.
+
+---
+
+![Fire grass](../images/fire-grass.png)
+
+**Author's note:** really *Chrysopogon*.
+"""
+
+
+class TestParseDraftImageAndRule(unittest.TestCase):
+    def test_image_dropped_rule_kept(self):
+        title, year, paras = b.parse_draft(DRAFT_WITH_IMAGE)
+        self.assertIn("The boys ran down the hill.", paras)
+        self.assertIn("---", paras)
+        self.assertFalse(any(p.startswith("![") for p in paras))
+
+
+class TestRenderStoryRule(unittest.TestCase):
+    def test_rule_becomes_hr(self):
+        item = {"title": "Fire Grass", "slug": "fire-grass",
+                "section": "Lower Primary", "year": "~1990",
+                "paras": ["The boys ran down the hill.", "---",
+                          "**Author's note:** really *Chrysopogon*."]}
+        out = b.render_story_page(item, None, None)
+        self.assertIn('<hr class="story-sep">', out)
+        self.assertNotIn("<p>---</p>", out)
+
+
 class TestMdInline(unittest.TestCase):
     def test_escapes_then_emphasis(self):
         self.assertEqual(
