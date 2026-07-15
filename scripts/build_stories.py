@@ -221,3 +221,56 @@ def render_index_page(groups):
 </html>
 """.format(head=head, nav=_NAV, subtitle=SUBTITLE,
            groups="\n".join(blocks), footer=_FOOTER)
+
+
+def load_stories():
+    """Return ordered list of fully-parsed story dicts from the manifest."""
+    manifest = (STORIES_REPO / "book-order.md").read_text(encoding="utf-8")
+    items = parse_manifest(manifest)
+    stories = []
+    for it in items:
+        draft = (STORIES_REPO / it["src"]).read_text(encoding="utf-8")
+        title, year, paras = parse_draft(draft)
+        stories.append({
+            "title": title,
+            "slug": slugify(title),
+            "section": it["section"],
+            "year": year,
+            "paras": paras,
+            "teaser": first_sentence(paras),
+        })
+    return stories
+
+
+def group_by_section(stories):
+    groups = []
+    for s in stories:
+        if not groups or groups[-1]["section"] != s["section"]:
+            groups.append({"section": s["section"], "stories": []})
+        groups[-1]["stories"].append(s)
+    return groups
+
+
+def build():
+    stories = load_stories()
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    # index
+    (OUT_DIR / "index.html").write_text(
+        render_index_page(group_by_section(stories)), encoding="utf-8"
+    )
+    # story pages
+    for i, s in enumerate(stories):
+        prev = stories[i - 1] if i > 0 else None
+        nxt = stories[i + 1] if i < len(stories) - 1 else None
+        page_dir = OUT_DIR / s["slug"]
+        page_dir.mkdir(parents=True, exist_ok=True)
+        (page_dir / "index.html").write_text(
+            render_story_page(s, prev, nxt), encoding="utf-8"
+        )
+    print("Generated {} story pages + index into {}".format(len(stories), OUT_DIR))
+    for s in stories:
+        print("  /stories/{}/  — {}".format(s["slug"], s["title"]))
+
+
+if __name__ == "__main__":
+    build()
