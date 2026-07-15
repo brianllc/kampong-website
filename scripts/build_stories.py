@@ -5,6 +5,7 @@ writes static HTML into this repo's stories/ folder. Re-run to resync.
 """
 import html
 import re
+import shutil
 from pathlib import Path
 
 STORIES_REPO = Path("/Users/luicheng/Hobby Projects/Stories for Ben")
@@ -263,6 +264,11 @@ def group_by_section(stories):
 def build():
     stories = load_stories()
     OUT_DIR.mkdir(parents=True, exist_ok=True)
+    # Remove stale story subdirectories from prior runs (slugs change when
+    # a story title is edited) so re-running is a clean resync.
+    for child in OUT_DIR.iterdir():
+        if child.is_dir():
+            shutil.rmtree(child)
     # index
     (OUT_DIR / "index.html").write_text(
         render_index_page(group_by_section(stories)), encoding="utf-8"
