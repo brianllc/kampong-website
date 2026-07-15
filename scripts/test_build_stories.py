@@ -94,5 +94,57 @@ class TestFirstSentence(unittest.TestCase):
         )
 
 
+class TestRenderStory(unittest.TestCase):
+    def _item(self):
+        return {
+            "title": "Spoons and Balloons",
+            "slug": "spoons-and-balloons",
+            "section": "Kindergarten",
+            "year": "~1987",
+            "paras": ["One evening, Brian sat down.", "**Note:** *ok*."],
+        }
+
+    def test_contains_title_meta_and_prose(self):
+        html_out = b.render_story_page(
+            self._item(),
+            prev={"title": "Kindergarten", "slug": "kindergarten"},
+            nxt=None,
+        )
+        self.assertIn("<title>Spoons and Balloons — Kampong Stories</title>", html_out)
+        self.assertIn('class="meta">Kindergarten · ~1987<', html_out)
+        self.assertIn("<h1 class=\"display\">Spoons and Balloons</h1>", html_out)
+        self.assertIn("<p>One evening, Brian sat down.</p>", html_out)
+        self.assertIn("<strong>Note:</strong> <em>ok</em>.", html_out)
+        self.assertIn('href="/stories/stories.css"', html_out)
+        self.assertIn('href="/stories/kindergarten/">← Kindergarten', html_out)
+        self.assertIn('class="next disabled"', html_out)
+
+    def test_meta_without_year(self):
+        item = self._item()
+        item["year"] = None
+        html_out = b.render_story_page(item, None, None)
+        self.assertIn('class="meta">Kindergarten<', html_out)
+
+
+class TestRenderIndex(unittest.TestCase):
+    def test_groups_and_links(self):
+        groups = [{
+            "section": "Kindergarten",
+            "stories": [{
+                "title": "Spoons and Balloons",
+                "slug": "spoons-and-balloons",
+                "year": "~1987",
+                "teaser": "One evening, Brian sat down.",
+            }],
+        }]
+        html_out = b.render_index_page(groups)
+        self.assertIn("<title>Stories — Kampong</title>", html_out)
+        self.assertIn(">Kindergarten</h2>", html_out)
+        self.assertIn('href="/stories/spoons-and-balloons/"', html_out)
+        self.assertIn(">Spoons and Balloons</span>", html_out)
+        self.assertIn(">~1987</span>", html_out)
+        self.assertIn("One evening, Brian sat down.", html_out)
+
+
 if __name__ == "__main__":
     unittest.main()

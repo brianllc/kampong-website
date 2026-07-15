@@ -81,3 +81,143 @@ def first_sentence(paras):
         return ""
     m = re.search(r"^(.+?[.!?])(?:\s|$)", paras[0])
     return m.group(1) if m else paras[0]
+
+
+FAVICON = (
+    "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' "
+    "viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' "
+    "fill='%230F1A14'/%3E%3Ctext x='32' y='46' font-size='44' "
+    "font-weight='bold' text-anchor='middle' fill='%23FF5C39' "
+    "font-family='Arial'%3E*%3C/text%3E%3C/svg%3E"
+)
+
+_HEAD = """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{title}</title>
+<meta name="description" content="{desc}">
+<meta property="og:title" content="{ogtitle}">
+<meta property="og:description" content="{desc}">
+<meta property="og:type" content="{ogtype}">
+<meta property="og:url" content="{ogurl}">
+<link rel="icon" href="{favicon}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600&family=Archivo+Black&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/stories/stories.css">
+</head>"""
+
+_NAV = """<nav>
+  <a class="wordmark" href="/">KAMPONG<span>*</span></a>
+  <a class="back" href="/stories/">← ALL STORIES</a>
+</nav>"""
+
+_FOOTER = """<footer>
+  <span>© 2026 KAMPONG.COM.SG</span>
+  <span>MADE WITH ❤ IN SINGAPORE</span>
+</footer>"""
+
+
+def nav_links(prev, nxt):
+    if prev:
+        left = ('<a class="prev" href="/stories/{s}/">← {t}</a>'
+                .format(s=prev["slug"], t=html.escape(prev["title"], quote=False)))
+    else:
+        left = '<span class="prev disabled"></span>'
+    if nxt:
+        right = ('<a class="next" href="/stories/{s}/">{t} →</a>'
+                 .format(s=nxt["slug"], t=html.escape(nxt["title"], quote=False)))
+    else:
+        right = '<span class="next disabled"></span>'
+    return (
+        '<nav class="storynav">\n  ' + left
+        + '\n  <a class="collection" href="/stories/">The Collection</a>\n  '
+        + right + '\n</nav>'
+    )
+
+
+def render_story_page(item, prev, nxt):
+    esc_title = html.escape(item["title"], quote=False)
+    meta = item["section"]
+    if item.get("year"):
+        meta += " · " + item["year"]
+    paras = "\n".join("<p>{}</p>".format(md_inline(p)) for p in item["paras"])
+    head = _HEAD.format(
+        title="{} — Kampong Stories".format(esc_title),
+        desc=html.escape(first_sentence(item["paras"]), quote=True),
+        ogtitle=html.escape(item["title"], quote=True),
+        ogtype="article",
+        ogurl="https://kampong.com.sg/stories/{}/".format(item["slug"]),
+        favicon=FAVICON,
+    )
+    return """{head}
+<body class="story">
+{nav}
+<article class="story-body">
+  <p class="meta">{meta}</p>
+  <h1 class="display">{title}</h1>
+{paras}
+</article>
+{storynav}
+{footer}
+</body>
+</html>
+""".format(head=head, nav=_NAV, meta=html.escape(meta, quote=False),
+           title=esc_title, paras=paras,
+           storynav=nav_links(prev, nxt), footer=_FOOTER)
+
+
+SUBTITLE = ("<em>The Little Boy Dreaming by the Window</em> — a Singapore "
+            "childhood in the late 1980s and early 1990s, told for Ben.")
+
+
+def render_index_page(groups):
+    head = _HEAD.format(
+        title="Stories — Kampong",
+        desc="Brian's childhood in 1980s–90s Singapore, a storybook told for his son Ben.",
+        ogtitle="Kampong Stories",
+        ogtype="website",
+        ogurl="https://kampong.com.sg/stories/",
+        favicon=FAVICON,
+    )
+    blocks = []
+    for g in groups:
+        lis = []
+        for s in g["stories"]:
+            lis.append(
+                '    <li><a href="/stories/{slug}/">'
+                '<span class="st">{title}</span> '
+                '<span class="sy">{year}</span></a>'
+                '<p class="teaser">{teaser}</p></li>'.format(
+                    slug=s["slug"],
+                    title=html.escape(s["title"], quote=False),
+                    year=html.escape(s["year"] or "", quote=False),
+                    teaser=html.escape(s["teaser"], quote=False),
+                )
+            )
+        blocks.append(
+            '  <section class="group">\n'
+            '    <h2 class="group-title">{sec}</h2>\n'
+            '    <ol class="story-list">\n{items}\n    </ol>\n'
+            '  </section>'.format(
+                sec=html.escape(g["section"], quote=False),
+                items="\n".join(lis),
+            )
+        )
+    return """{head}
+<body class="index">
+{nav}
+<header class="collection-hero">
+  <h1 class="display">STORIES</h1>
+  <p class="subtitle">{subtitle}</p>
+</header>
+<main>
+{groups}
+</main>
+{footer}
+</body>
+</html>
+""".format(head=head, nav=_NAV, subtitle=SUBTITLE,
+           groups="\n".join(blocks), footer=_FOOTER)
