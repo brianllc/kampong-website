@@ -15,180 +15,51 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600&family=Archivo+Black&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --ink:#0F1A14;
-  --ink-2:#16241C;
-  --paper:#F4F1E8;
-  --chili:#FF5C39;
-  --palm:#7BE0AD;
-  --mustard:#E8C547;
-  --line:#2A3D32;
-}
-html{scroll-behavior:smooth}
-body{font-family:'Archivo',sans-serif;background:var(--ink);color:var(--paper)}
-.display{font-family:'Archivo Black',sans-serif}
-a:focus-visible{outline:2px solid var(--palm);outline-offset:3px;border-radius:4px}
-
-/* === Nav === */
-nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:22px 5vw;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(15,26,20,.92);backdrop-filter:blur(8px);z-index:50}
-.wordmark{font-family:'Archivo Black',sans-serif;font-size:1.1rem;letter-spacing:.06em}
-.wordmark span{color:var(--chili)}
-nav .links{display:flex;gap:1.6rem;font-size:.8rem;font-weight:600;letter-spacing:.12em}
-nav .links a{color:var(--paper);text-decoration:none;opacity:.8;transition:opacity .2s,color .2s}
-nav .links a:hover{opacity:1;color:var(--palm)}
-nav .coords{font-size:.7rem;color:var(--palm);letter-spacing:.08em}
-
-/* === Hero === */
-.hero{min-height:88vh;display:flex;flex-direction:column;justify-content:center;padding:6vh 5vw 0}
-.hero h1{font-size:clamp(2.3rem,11vw,9rem);line-height:.95;letter-spacing:-.01em}
-.hero h1 .t{color:var(--chili)}
-.hero h1 .p{color:var(--palm)}
-.hero .sub{margin-top:1.6rem;max-width:34rem;font-size:1.05rem;line-height:1.6;opacity:.75}
-.pills{display:flex;gap:.7rem;margin-top:2.2rem;flex-wrap:wrap}
-.pill{font-size:.78rem;font-weight:600;letter-spacing:.1em;padding:.55rem 1.3rem;border-radius:100px;color:var(--ink);text-decoration:none;transition:transform .2s}
-.pill:hover{transform:translateY(-2px)}
-.pill.f{background:var(--chili)} .pill.c{background:var(--palm)} .pill.h{background:var(--mustard)}
-
-.hero-photo{margin:6vh 5vw 0;height:52vh;border-radius:18px;overflow:hidden;position:relative;background:var(--ink-2)}
-.hero-photo img{width:100%;height:100%;object-fit:cover;display:block}
-.hero-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,26,20,.1),rgba(15,26,20,.4))}
-
-/* === Ticker === */
-.ticker{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;white-space:nowrap;padding:.85rem 0;margin-top:7vh}
-.ticker .inner{display:inline-block;animation:tick 32s linear infinite;font-size:.85rem;font-weight:600;letter-spacing:.18em;color:var(--mustard)}
-@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-/* === Chapters === */
-.chapter{display:grid;grid-template-columns:1fr 1fr;gap:4vw;align-items:center;padding:12vh 5vw;border-bottom:1px solid var(--line)}
-.chapter.rev .photo{order:-1}
-section[id]{scroll-margin-top:80px}
-.chapter .num{font-size:.8rem;letter-spacing:.25em;font-weight:600;margin-bottom:1rem}
-.chapter h2{font-size:clamp(2.2rem,5vw,4rem);line-height:1;margin-bottom:1.4rem}
-.chapter p{font-size:1rem;line-height:1.7;opacity:.75;max-width:30rem}
-.chapter .photo{height:56vh;border-radius:18px;overflow:hidden;position:relative;background:var(--ink-2)}
-.chapter .photo img{width:100%;height:100%;object-fit:cover;display:block}
-.chapter .photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,26,20,0),rgba(15,26,20,.3))}
-.soon{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.8rem;font-size:.75rem;font-weight:600;letter-spacing:.14em;border:1px solid var(--line);padding:.55rem 1.2rem;border-radius:100px;opacity:.85}
-.soon .dot{width:7px;height:7px;border-radius:50%;animation:pulse 1.8s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.ch-food .num,.ch-food .soon{color:var(--chili)} .ch-food .dot{background:var(--chili)}
-.ch-culture .num,.ch-culture .soon{color:var(--palm)} .ch-culture .dot{background:var(--palm)}
-.ch-heritage .num,.ch-heritage .soon{color:var(--mustard)} .ch-heritage .dot{background:var(--mustard)}
-
-/* === Outro / footer === */
-.outro{padding:14vh 5vw;text-align:center}
-.outro h2{font-size:clamp(2rem,6vw,4.5rem);line-height:1.05}
-.outro h2 em{font-style:normal;color:var(--chili)}
-.outro p{margin-top:1.2rem;opacity:.7}
-footer{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding:1.6rem 5vw;border-top:1px solid var(--line);font-size:.75rem;opacity:.55;letter-spacing:.06em}
-
-/* === Scroll reveal (classes applied by JS) === */
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease}
-.reveal.visible{opacity:1;transform:translateY(0)}
-
-/* === Mobile === */
-@media(max-width:760px){
-  nav .coords{display:none}
-  nav .links{gap:1rem}
-  .chapter{grid-template-columns:1fr}
-  .chapter .photo{order:-1;height:34vh}
-}
-@media(max-width:400px){nav{flex-wrap:wrap;padding-left:4vw;padding-right:4vw}nav .links{gap:.7rem;font-size:.72rem}}
-
-/* === Reduced motion === */
-@media(prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  .ticker .inner{animation:none}
-  .soon .dot{animation:none}
-  .reveal{opacity:1;transform:none;transition:none}
-}
-</style>
+<link rel="stylesheet" href="assets/css/home.css">
+<script src="assets/js/home.js" defer></script>
 </head>
 <body>
-
-<nav>
-  <div class="wordmark">KAMPONG<span>*</span></div>
-  <div class="links">
-    <a href="#food">FOOD</a><a href="#culture">CULTURE</a><a href="#heritage">HERITAGE</a>
-  </div>
-  <div class="coords">SG · 1.3521° N</div>
+<a class="skip-link" href="#main">Skip to content</a>
+<nav class="site-nav" aria-label="Main navigation">
+  <a class="wordmark" href="#top" aria-label="Kampong home">KAMPONG<span>*</span></a>
+  <div class="links"><a href="#food">FOOD</a><a href="#culture">CULTURE</a><a href="#heritage">HERITAGE</a></div>
+  <span class="coords">SG · 1.3521° N</span>
+  <div class="progress" aria-hidden="true"></div>
 </nav>
-
-<header class="hero">
-  <h1 class="display">EVERY<span class="t">THING</span><br>SINGA<span class="p">PORE</span></h1>
-  <p class="sub">From the first hiss of the wok at dawn to the last MRT home — Kampong is a love letter to the food, culture and heritage of the Little Red Dot.</p>
-  <div class="pills">
-    <a class="pill f" href="#food">FOOD</a>
-    <a class="pill c" href="#culture">CULTURE</a>
-    <a class="pill h" href="#heritage">HERITAGE</a>
+<main id="main">
+<header class="hero" id="top">
+  <div class="hero-copy">
+    <p class="eyebrow">A LITTLE ISLAND. A THOUSAND STORIES.</p>
+    <h1>EVERY<span class="chili">THING</span><br>SINGA<span class="palm">PORE</span><span class="hero-star" aria-hidden="true">*</span></h1>
+    <div class="hero-bottom"><p>From the first hiss of the wok at dawn to the last MRT home. A love letter to the Little Red Dot.</p><a class="scroll-cue" href="#food">SCROLL TO EXPLORE <span aria-hidden="true">↓</span></a></div>
   </div>
+  <figure class="hero-photo"><img src="assets/img/hero.jpg" alt="Crowds dining at a bustling Singapore hawker centre" fetchpriority="high"><figcaption><span>EVERYDAY LIFE. EXTRAORDINARY ISLAND.</span><span>01 / SINGAPORE</span></figcaption></figure>
 </header>
-
-<div class="hero-photo">
-  <img src="assets/img/hero.jpg" alt="Crowds dining at a bustling Singapore hawker centre" fetchpriority="high">
-</div>
-
-<div class="ticker" aria-hidden="true"><div class="inner"><span>LAKSA &nbsp;·&nbsp; SHOPHOUSES &nbsp;·&nbsp; NATIONAL DAY &nbsp;·&nbsp; CHICKEN RICE &nbsp;·&nbsp; MERLION &nbsp;·&nbsp; HDB VOID DECKS &nbsp;·&nbsp; PERANAKAN TILES &nbsp;·&nbsp; KOPI-O &nbsp;·&nbsp; GARDENS BY THE BAY &nbsp;·&nbsp; SINGLISH &nbsp;·&nbsp;</span><span>LAKSA &nbsp;·&nbsp; SHOPHOUSES &nbsp;·&nbsp; NATIONAL DAY &nbsp;·&nbsp; CHICKEN RICE &nbsp;·&nbsp; MERLION &nbsp;·&nbsp; HDB VOID DECKS &nbsp;·&nbsp; PERANAKAN TILES &nbsp;·&nbsp; KOPI-O &nbsp;·&nbsp; GARDENS BY THE BAY &nbsp;·&nbsp; SINGLISH &nbsp;·&nbsp;</span></div></div>
-
-<section class="chapter ch-food" id="food">
-  <div>
-    <div class="num">CHAPTER 01 — FOOD</div>
-    <h2 class="display">THE NATIONAL OBSESSION</h2>
-    <p>Michelin stars in hawker stalls. Breakfast debates that last generations. We're documenting the dishes, the uncles and aunties behind them, and where to find the good stuff.</p>
-    <span class="soon"><span class="dot"></span>STORIES COOKING — COMING SOON</span>
+<div class="ticker" aria-hidden="true"><div>LAKSA · SHOPHOUSES · KOPI-O · HDB VOID DECKS · SINGLISH · CHICKEN RICE · PERANAKAN TILES · <span>LAKSA · SHOPHOUSES · KOPI-O · HDB VOID DECKS · SINGLISH · CHICKEN RICE · PERANAKAN TILES · </span></div></div>
+<section class="journey" aria-label="Explore Singapore">
+  <div class="scene" aria-hidden="true">
+    <img class="scene-image active" data-scene="food" src="assets/img/food.jpg" alt="">
+    <img class="scene-image" data-scene="culture" src="assets/img/culture.jpg" alt="" loading="lazy">
+    <img class="scene-image" data-scene="heritage" src="assets/img/heritage.jpg" alt="" loading="lazy">
+    <div class="scene-caption"><span id="scene-label">THE HAWKER HEARTBEAT</span><span id="scene-count">01 / 03</span></div>
   </div>
-  <div class="photo"><img src="assets/img/food.jpg" alt="Flames leaping from a wok during stir-frying" loading="lazy"></div>
-</section>
-
-<section class="chapter ch-culture rev" id="culture">
-  <div>
-    <div class="num">CHAPTER 02 — CULTURE</div>
-    <h2 class="display">FOUR LANGUAGES, ONE VOICE</h2>
-    <p>Malay, Chinese, Indian, Eurasian and everything in between — festivals that light up the whole street, Singlish that says more in one "lah" than a paragraph ever could.</p>
-    <span class="soon"><span class="dot"></span>STORIES BREWING — COMING SOON</span>
+  <div class="chapters">
+    <section class="chapter" id="food" data-label="THE HAWKER HEARTBEAT" data-number="01">
+      <img class="mobile-photo" src="assets/img/food.jpg" alt="Flames leaping from a wok during stir-frying" loading="lazy">
+      <div class="chapter-copy"><p class="eyebrow">01 / FOOD</p><h2>THE NATIONAL<br><em>OBSESSION.</em></h2><p>Michelin stars in hawker stalls. Breakfast debates that last generations. Here, “have you eaten?” means “I care”.</p><p class="detail">The dishes, the uncles and aunties behind them, and where to find the good stuff.</p><span class="soon"><i></i> STORIES COOKING — COMING SOON</span></div>
+    </section>
+    <section class="chapter" id="culture" data-label="MANY ROOTS. ONE RHYTHM." data-number="02">
+      <img class="mobile-photo" src="assets/img/culture.jpg" alt="A vivid red Chinese lion dance costume" loading="lazy">
+      <div class="chapter-copy"><p class="eyebrow">02 / CULTURE</p><h2>FOUR LANGUAGES.<br><em>ONE VOICE.</em></h2><p>Malay, Chinese, Indian, Eurasian and everything in between. A little of everywhere, made into something entirely our own.</p><p class="detail">Festivals that light up the whole street. Singlish that says more in one “lah” than a paragraph ever could.</p><span class="soon"><i></i> STORIES BREWING — COMING SOON</span></div>
+    </section>
+    <section class="chapter" id="heritage" data-label="THE PLACES THAT REMEMBER" data-number="03">
+      <img class="mobile-photo" src="assets/img/heritage.jpg" alt="Pastel-coloured Peranakan shophouse facades" loading="lazy">
+      <div class="chapter-copy"><p class="eyebrow">03 / HERITAGE</p><h2>FROM KAMPONG<br><em>TO SKYLINE.</em></h2><p>Shophouse shutters, dragon kilns, the last villages. An island that keeps moving, with stories worth slowing down for.</p><p class="detail">How a fishing settlement became a metropolis in one lifetime — and what we're keeping along the way.</p><span class="soon"><i></i> STORIES UNEARTHED — COMING SOON</span></div>
+    </section>
   </div>
-  <div class="photo"><img src="assets/img/culture.jpg" alt="A vivid red Chinese lion dance costume" loading="lazy"></div>
 </section>
-
-<section class="chapter ch-heritage" id="heritage">
-  <div>
-    <div class="num">CHAPTER 03 — HERITAGE</div>
-    <h2 class="display">FROM KAMPONG TO SKYLINE</h2>
-    <p>Shophouse shutters, dragon kilns, the last villages. How a fishing settlement became a metropolis in one lifetime — and what we're keeping along the way.</p>
-    <span class="soon"><span class="dot"></span>STORIES UNEARTHED — COMING SOON</span>
-  </div>
-  <div class="photo"><img src="assets/img/heritage.jpg" alt="Pastel-coloured Peranakan shophouse facades" loading="lazy"></div>
-</section>
-
-<section class="outro">
-  <h2 class="display">THE KAMPONG IS <em>GATHERING</em></h2>
-  <p>Something good is on the way. Check back soon, can?</p>
-</section>
-
-<footer>
-  <span>© 2026 KAMPONG.COM.SG</span>
-  <span>MADE WITH ❤ IN SINGAPORE</span>
-</footer>
-
-<script>
-(function () {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  if (!('IntersectionObserver' in window)) return;
-  var targets = document.querySelectorAll('.chapter > div, .outro');
-  targets.forEach(function (el) { el.classList.add('reveal'); });
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        io.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.15 });
-  targets.forEach(function (el) { io.observe(el); });
-})();
-</script>
-
+<section class="outro"><p class="eyebrow">FOOD. CULTURE. HERITAGE. HOME.</p><h2>THIS IS OUR<br><em>KAMPONG.</em><span aria-hidden="true">*</span></h2><a href="#top">BACK TO THE TOP ↑</a></section>
+</main>
+<footer><span>© 2026 KAMPONG.COM.SG</span><span>MADE WITH ❤ IN SINGAPORE</span></footer>
 </body>
 </html>
